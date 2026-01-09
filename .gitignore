@@ -26,3 +26,14 @@ yarn-error.log*
 
 # OS
 .DS_Store
+
+# Symfony (api/)
+api/var/
+api/vendor/
+api/.env.local
+api/.env.*.local
+api/.phpunit.result.cache
+api/phpunit.xml
+
+# Postman
+*.postman_environment.json

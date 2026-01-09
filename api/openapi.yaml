@@ -1,0 +1,2312 @@
+openapi: 3.1.0
+info:
+  title: 'Hello API Platform'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: /
+    description: ''
+paths:
+  /api/clients:
+    get:
+      operationId: api_clients_get_collection
+      tags:
+        - Client
+      responses:
+        '200':
+          description: 'Client collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                description: 'Client.jsonld collection.'
+                allOf:
+                  - { $ref: '#/components/schemas/HydraCollectionBaseSchema' }
+                  - { type: object, required: [member], properties: { member: { type: array, items: { $ref: '#/components/schemas/Client.jsonld' } } } }
+      summary: 'Retrieves the collection of Client resources.'
+      description: 'Retrieves the collection of Client resources.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+    post:
+      operationId: api_clients_post
+      tags:
+        - Client
+      responses:
+        '201':
+          description: 'Client resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Client.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+      summary: 'Creates a Client resource.'
+      description: 'Creates a Client resource.'
+      parameters: []
+      requestBody:
+        description: 'The new Client resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        required: true
+  '/api/clients/{id}':
+    get:
+      operationId: api_clients_id_get
+      tags:
+        - Client
+      responses:
+        '200':
+          description: 'Client resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Client.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Retrieves a Client resource.'
+      description: 'Retrieves a Client resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Client identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+    put:
+      operationId: api_clients_id_put
+      tags:
+        - Client
+      responses:
+        '200':
+          description: 'Client resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Client.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Replaces the Client resource.'
+      description: 'Replaces the Client resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Client identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+      requestBody:
+        description: 'The updated Client resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        required: true
+    delete:
+      operationId: api_clients_id_delete
+      tags:
+        - Client
+      responses:
+        '204':
+          description: 'Client resource deleted'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Removes the Client resource.'
+      description: 'Removes the Client resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Client identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+  /api/interventions:
+    get:
+      operationId: api_interventions_get_collection
+      tags:
+        - Intervention
+      responses:
+        '200':
+          description: 'Intervention collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                description: 'Intervention.jsonld collection.'
+                allOf:
+                  - { $ref: '#/components/schemas/HydraCollectionBaseSchema' }
+                  - { type: object, required: [member], properties: { member: { type: array, items: { $ref: '#/components/schemas/Intervention.jsonld' } } } }
+      summary: 'Retrieves the collection of Intervention resources.'
+      description: 'Retrieves the collection of Intervention resources.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+        -
+          name: 'date[before]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'date[strictly_before]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'date[after]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'date[strictly_after]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: status
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'status[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: type
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'type[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: technician
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'technician[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: client
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: string
+          style: form
+          explode: false
+        -
+          name: 'client[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+    post:
+      operationId: api_interventions_post
+      tags:
+        - Intervention
+      responses:
+        '201':
+          description: 'Intervention resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Intervention.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+      summary: 'Creates a Intervention resource.'
+      description: 'Creates a Intervention resource.'
+      parameters: []
+      requestBody:
+        description: 'The new Intervention resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Intervention'
+        required: true
+  '/api/interventions/{id}':
+    get:
+      operationId: api_interventions_id_get
+      tags:
+        - Intervention
+      responses:
+        '200':
+          description: 'Intervention resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Intervention.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Retrieves a Intervention resource.'
+      description: 'Retrieves a Intervention resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Intervention identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+    put:
+      operationId: api_interventions_id_put
+      tags:
+        - Intervention
+      responses:
+        '200':
+          description: 'Intervention resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Intervention.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Replaces the Intervention resource.'
+      description: 'Replaces the Intervention resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Intervention identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+      requestBody:
+        description: 'The updated Intervention resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Intervention'
+        required: true
+    delete:
+      operationId: api_interventions_id_delete
+      tags:
+        - Intervention
+      responses:
+        '204':
+          description: 'Intervention resource deleted'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Removes the Intervention resource.'
+      description: 'Removes the Intervention resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Intervention identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+  '/api/interventions/{id}/reschedule':
+    put:
+      operationId: reschedule
+      tags:
+        - Intervention
+      responses:
+        '200':
+          description: 'Intervention resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Intervention.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Reporter une intervention'
+      description: "Change la date d'une intervention existante"
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Intervention identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+      requestBody:
+        description: 'The updated Intervention resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Intervention'
+        required: true
+  /api/notifications:
+    get:
+      operationId: api_notifications_get_collection
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: 'Notification collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                description: 'Notification.jsonld collection.'
+                allOf:
+                  - { $ref: '#/components/schemas/HydraCollectionBaseSchema' }
+                  - { type: object, required: [member], properties: { member: { type: array, items: { $ref: '#/components/schemas/Notification.jsonld' } } } }
+      summary: 'Retrieves the collection of Notification resources.'
+      description: 'Retrieves the collection of Notification resources.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+        -
+          name: read
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          schema:
+            type: boolean
+          style: form
+          explode: false
+  /api/notifications/read-all:
+    put:
+      operationId: mark_all_read
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: 'Notification resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Notification.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Marquer toutes les notifications comme lues'
+      description: 'Replaces the Notification resource.'
+      parameters: []
+      requestBody:
+        description: 'The updated Notification resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+  '/api/notifications/{id}':
+    get:
+      operationId: api_notifications_id_get
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: 'Notification resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Notification.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Retrieves a Notification resource.'
+      description: 'Retrieves a Notification resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Notification identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+    delete:
+      operationId: api_notifications_id_delete
+      tags:
+        - Notification
+      responses:
+        '204':
+          description: 'Notification resource deleted'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Removes the Notification resource.'
+      description: 'Removes the Notification resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Notification identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+  '/api/notifications/{id}/read':
+    put:
+      operationId: mark_read
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: 'Notification resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Notification.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Marquer une notification comme lue'
+      description: 'Replaces the Notification resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Notification identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+      requestBody:
+        description: 'The updated Notification resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+  /api/technicians:
+    get:
+      operationId: api_technicians_get_collection
+      tags:
+        - Technician
+      responses:
+        '200':
+          description: 'Technician collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                description: 'Technician.jsonld collection.'
+                allOf:
+                  - { $ref: '#/components/schemas/HydraCollectionBaseSchema' }
+                  - { type: object, required: [member], properties: { member: { type: array, items: { $ref: '#/components/schemas/Technician.jsonld' } } } }
+      summary: 'Retrieves the collection of Technician resources.'
+      description: 'Retrieves the collection of Technician resources.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+    post:
+      operationId: api_technicians_post
+      tags:
+        - Technician
+      responses:
+        '201':
+          description: 'Technician resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Technician.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+      summary: 'Creates a Technician resource.'
+      description: 'Creates a Technician resource.'
+      parameters: []
+      requestBody:
+        description: 'The new Technician resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Technician'
+        required: true
+  '/api/technicians/{id}':
+    get:
+      operationId: api_technicians_id_get
+      tags:
+        - Technician
+      responses:
+        '200':
+          description: 'Technician resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Technician.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Retrieves a Technician resource.'
+      description: 'Retrieves a Technician resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Technician identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+    put:
+      operationId: api_technicians_id_put
+      tags:
+        - Technician
+      responses:
+        '200':
+          description: 'Technician resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Technician.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Replaces the Technician resource.'
+      description: 'Replaces the Technician resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Technician identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+      requestBody:
+        description: 'The updated Technician resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Technician'
+        required: true
+    delete:
+      operationId: api_technicians_id_delete
+      tags:
+        - Technician
+      responses:
+        '204':
+          description: 'Technician resource deleted'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Removes the Technician resource.'
+      description: 'Removes the Technician resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Technician identifier'
+          required: true
+          deprecated: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+  /api/user/change-password:
+    post:
+      operationId: change_password
+      tags:
+        - User
+      responses:
+        '201':
+          description: 'User resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+      summary: 'Changer le mot de passe'
+      description: 'Creates a User resource.'
+      parameters: []
+      requestBody:
+        description: 'The new User resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+  /api/user/preferences/notifications:
+    put:
+      operationId: update_notification_preferences
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'User resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Modifier les préférences de notifications'
+      description: 'Replaces the User resource.'
+      parameters: []
+      requestBody:
+        description: 'The updated User resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+  /api/user/preferences/weather:
+    put:
+      operationId: update_weather_preferences
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'User resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Modifier les préférences météo'
+      description: 'Replaces the User resource.'
+      parameters: []
+      requestBody:
+        description: 'The updated User resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+  /api/user/profile:
+    get:
+      operationId: get_profile
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'User resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Récupérer le profil utilisateur'
+      description: "Retourne le profil de l'utilisateur connecté"
+      parameters: []
+    put:
+      operationId: update_profile
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'User resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+          links: {  }
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+          links: {  }
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          links: {  }
+      summary: 'Modifier le profil utilisateur'
+      description: "Met à jour le profil de l'utilisateur connecté"
+      parameters: []
+      requestBody:
+        description: 'The updated User resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+  /api/dashboard/stats:
+    get:
+      operationId: dashboard_stats
+      tags:
+        - Dashboard
+      responses:
+        '200':
+          description: 'Dashboard statistics'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interventionsThisWeek:
+                    type: integer
+                    description: 'Number of interventions scheduled this week'
+                  weatherRiskInterventions:
+                    type: integer
+                    description: 'Number of interventions with rain probability > 50%'
+                  confirmedInterventions:
+                    type: integer
+                    description: 'Number of confirmed interventions'
+                  activeTechnicians:
+                    type: integer
+                    description: 'Number of active technicians'
+      summary: 'Get dashboard statistics'
+      description: 'Returns aggregated statistics for the dashboard'
+      parameters: []
+  /api/weather/forecast/{interventionId}:
+    get:
+      operationId: weather_forecast
+      tags:
+        - Weather
+      responses:
+        '200':
+          description: 'Weather forecast for intervention'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interventionId:
+                    type: integer
+                  location:
+                    type: string
+                  forecast:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        day:
+                          type: string
+                        date:
+                          type: string
+                          format: date
+                        temperature:
+                          type: integer
+                        rainProbability:
+                          type: integer
+                        condition:
+                          type: string
+        '404':
+          description: 'Intervention not found'
+      summary: 'Get weather forecast for an intervention'
+      description: 'Returns 5-day weather forecast for the intervention location'
+      parameters:
+        - name: interventionId
+          in: path
+          description: 'Intervention ID'
+          required: true
+          schema:
+            type: integer
+  /api/weather/alerts:
+    get:
+      operationId: weather_alerts
+      tags:
+        - Weather
+      responses:
+        '200':
+          description: 'Weather alerts for risky interventions'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  alerts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        interventionId:
+                          type: integer
+                        title:
+                          type: string
+                        date:
+                          type: string
+                          format: date
+                        location:
+                          type: string
+                        rainProbability:
+                          type: integer
+      summary: 'Get weather alerts'
+      description: 'Returns interventions with rain probability > 50%'
+      parameters: []
+  /api/weather/location/{lat},{lng}:
+    get:
+      operationId: weather_location
+      tags:
+        - Weather
+      responses:
+        '200':
+          description: 'Weather data for location'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  latitude:
+                    type: number
+                  longitude:
+                    type: number
+                  current:
+                    type: object
+                    properties:
+                      temperature:
+                        type: integer
+                      humidity:
+                        type: integer
+                      condition:
+                        type: string
+                      windSpeed:
+                        type: integer
+                  forecast:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        day:
+                          type: string
+                        date:
+                          type: string
+                          format: date
+                        temperature:
+                          type: integer
+                        rainProbability:
+                          type: integer
+                        condition:
+                          type: string
+      summary: 'Get weather by coordinates'
+      description: 'Returns current weather and forecast for given coordinates'
+      parameters:
+        - name: lat
+          in: path
+          description: 'Latitude'
+          required: true
+          schema:
+            type: number
+        - name: lng
+          in: path
+          description: 'Longitude'
+          required: true
+          schema:
+            type: number
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        name:
+          type: string
+        type:
+          enum:
+            - Syndic
+            - Particulier
+            - Copropriété
+            - Entreprise
+            - Collectivité
+          type: string
+        phone:
+          type: string
+        email:
+          format: email
+          externalDocs:
+            url: 'https://schema.org/email'
+          type: string
+        address:
+          type: string
+        status:
+          enum:
+            - Actif
+            - Inactif
+          default: Actif
+          type: string
+        interventions:
+          type: array
+          items:
+            type: string
+            format: iri-reference
+            example: 'https://example.com/'
+        interventionsCount:
+          readOnly: true
+          type: integer
+      required:
+        - name
+        - type
+        - phone
+        - email
+        - address
+    Client.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+            name:
+              type: string
+            type:
+              enum:
+                - Syndic
+                - Particulier
+                - Copropriété
+                - Entreprise
+                - Collectivité
+              type: string
+            phone:
+              type: string
+            email:
+              format: email
+              externalDocs:
+                url: 'https://schema.org/email'
+              type: string
+            address:
+              type: string
+            status:
+              enum:
+                - Actif
+                - Inactif
+              default: Actif
+              type: string
+            interventions:
+              type: array
+              items:
+                type: string
+                format: iri-reference
+                example: 'https://example.com/'
+            interventionsCount:
+              readOnly: true
+              type: integer
+          required:
+            - name
+            - type
+            - phone
+            - email
+            - address
+    ConstraintViolation:
+      type: object
+      description: 'Unprocessable entity'
+      properties:
+        status:
+          default: 422
+          type: integer
+        violations:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyPath:
+                type: string
+                description: 'The property path of the violation'
+              message:
+                type: string
+                description: 'The message associated with the violation'
+        detail:
+          readOnly: true
+          type: string
+        type:
+          readOnly: true
+          type: string
+        title:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+        instance:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+    ConstraintViolation.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            status:
+              default: 422
+              type: integer
+            violations:
+              type: array
+              items:
+                type: object
+                properties:
+                  propertyPath: { type: string, description: 'The property path of the violation' }
+                  message: { type: string, description: 'The message associated with the violation' }
+            detail:
+              readOnly: true
+              type: string
+            description:
+              readOnly: true
+              type: string
+            type:
+              readOnly: true
+              type: string
+            title:
+              readOnly: true
+              type:
+                - string
+                - 'null'
+            instance:
+              readOnly: true
+              type:
+                - string
+                - 'null'
+      description: 'Unprocessable entity'
+    Error:
+      type: object
+      description: 'A representation of common errors.'
+      properties:
+        title:
+          readOnly: true
+          description: 'A short, human-readable summary of the problem.'
+          type:
+            - string
+            - 'null'
+        detail:
+          readOnly: true
+          description: 'A human-readable explanation specific to this occurrence of the problem.'
+          type:
+            - string
+            - 'null'
+        status:
+          type:
+            - number
+            - 'null'
+          examples:
+            - 404
+          default: 400
+        instance:
+          readOnly: true
+          description: 'A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.'
+          type:
+            - string
+            - 'null'
+        type:
+          readOnly: true
+          description: 'A URI reference that identifies the problem type'
+          type: string
+    Error.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            title:
+              readOnly: true
+              description: 'A short, human-readable summary of the problem.'
+              type:
+                - string
+                - 'null'
+            detail:
+              readOnly: true
+              description: 'A human-readable explanation specific to this occurrence of the problem.'
+              type:
+                - string
+                - 'null'
+            status:
+              type:
+                - number
+                - 'null'
+              examples:
+                - 404
+              default: 400
+            instance:
+              readOnly: true
+              description: 'A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.'
+              type:
+                - string
+                - 'null'
+            type:
+              readOnly: true
+              description: 'A URI reference that identifies the problem type'
+              type: string
+            description:
+              readOnly: true
+              type:
+                - string
+                - 'null'
+      description: 'A representation of common errors.'
+    HydraCollectionBaseSchema:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraCollectionBaseSchemaNoPagination'
+        -
+          type: object
+          properties:
+            view:
+              type: object
+              properties:
+                '@id':
+                  type: string
+                  format: iri-reference
+                '@type':
+                  type: string
+                first:
+                  type: string
+                  format: iri-reference
+                last:
+                  type: string
+                  format: iri-reference
+                previous:
+                  type: string
+                  format: iri-reference
+                next:
+                  type: string
+                  format: iri-reference
+              example:
+                '@id': string
+                type: string
+                first: string
+                last: string
+                previous: string
+                next: string
+    HydraCollectionBaseSchemaNoPagination:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          minimum: 0
+        search:
+          type: object
+          properties:
+            '@type':
+              type: string
+            template:
+              type: string
+            variableRepresentation:
+              type: string
+            mapping:
+              type: array
+              items:
+                type: object
+                properties:
+                  '@type': { type: string }
+                  variable: { type: string }
+                  property: { type: [string, 'null'] }
+                  required: { type: boolean }
+    HydraItemBaseSchema:
+      type: object
+      properties:
+        '@context':
+          oneOf:
+            -
+              type: string
+            -
+              type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          type: string
+        '@type':
+          type: string
+      required:
+        - '@id'
+        - '@type'
+    Intervention:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        title:
+          type: string
+        client:
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
+        technician:
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
+        date:
+          type: string
+          format: date-time
+        time:
+          type: string
+          format: date-time
+        duration:
+          minimum: 0
+          exclusiveMinimum: 0
+          type: integer
+        location:
+          type: string
+        type:
+          enum:
+            - Toiture
+            - Façade
+            - Étanchéité
+            - 'Peinture extérieure'
+            - Inspection
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        status:
+          enum:
+            - Planifiée
+            - Confirmée
+            - 'En cours'
+            - Terminée
+            - Annulée
+          default: Planifiée
+          type: string
+        rainProbability:
+          minimum: 0
+          maximum: 100
+          type:
+            - integer
+            - 'null'
+      required:
+        - title
+        - client
+        - technician
+        - date
+        - time
+        - duration
+        - location
+        - type
+    Intervention.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+            title:
+              type: string
+            client:
+              type: string
+              format: iri-reference
+              example: 'https://example.com/'
+            technician:
+              type: string
+              format: iri-reference
+              example: 'https://example.com/'
+            date:
+              type: string
+              format: date-time
+            time:
+              type: string
+              format: date-time
+            duration:
+              minimum: 0
+              exclusiveMinimum: 0
+              type: integer
+            location:
+              type: string
+            type:
+              enum:
+                - Toiture
+                - Façade
+                - Étanchéité
+                - 'Peinture extérieure'
+                - Inspection
+              type: string
+            description:
+              type:
+                - string
+                - 'null'
+            status:
+              enum:
+                - Planifiée
+                - Confirmée
+                - 'En cours'
+                - Terminée
+                - Annulée
+              default: Planifiée
+              type: string
+            rainProbability:
+              minimum: 0
+              maximum: 100
+              type:
+                - integer
+                - 'null'
+          required:
+            - title
+            - client
+            - technician
+            - date
+            - time
+            - duration
+            - location
+            - type
+    Notification:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        type:
+          enum:
+            - alert
+            - calendar
+            - info
+            - success
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        read:
+          default: false
+          type: boolean
+        user:
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
+      required:
+        - type
+        - title
+        - message
+    Notification.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+            type:
+              enum:
+                - alert
+                - calendar
+                - info
+                - success
+              type: string
+            title:
+              type: string
+            message:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            read:
+              default: false
+              type: boolean
+            user:
+              type: string
+              format: iri-reference
+              example: 'https://example.com/'
+          required:
+            - type
+            - title
+            - message
+    Technician:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        email:
+          format: email
+          externalDocs:
+            url: 'https://schema.org/email'
+          type: string
+        location:
+          type: string
+        status:
+          enum:
+            - Actif
+            - 'En congé'
+          default: Actif
+          type: string
+        specialties:
+          type: array
+          items:
+            type:
+              - string
+              - 'null'
+        interventions:
+          type: array
+          items:
+            type: string
+            format: iri-reference
+            example: 'https://example.com/'
+      required:
+        - name
+        - role
+        - phone
+        - email
+        - location
+    Technician.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+            name:
+              type: string
+            role:
+              type: string
+            phone:
+              type: string
+            email:
+              format: email
+              externalDocs:
+                url: 'https://schema.org/email'
+              type: string
+            location:
+              type: string
+            status:
+              enum:
+                - Actif
+                - 'En congé'
+              default: Actif
+              type: string
+            specialties:
+              type: array
+              items:
+                type:
+                  - string
+                  - 'null'
+            interventions:
+              type: array
+              items:
+                type: string
+                format: iri-reference
+                example: 'https://example.com/'
+          required:
+            - name
+            - role
+            - phone
+            - email
+            - location
+    User:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        email:
+          format: email
+          externalDocs:
+            url: 'https://schema.org/email'
+          type: string
+        roles:
+          type: array
+          items:
+            type:
+              - string
+              - 'null'
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type:
+            - string
+            - 'null'
+        weatherPreferences:
+          default:
+            rainAlertThreshold: 50
+            geographicZone: Île-de-France
+          type: array
+          items:
+            type:
+              - string
+              - 'null'
+        notificationPreferences:
+          default:
+            weatherAlerts: true
+            interventionReminders: true
+            emailNotifications: true
+          type: array
+          items:
+            type:
+              - string
+              - 'null'
+        notifications:
+          readOnly: true
+          type: array
+          items:
+            type: string
+            format: iri-reference
+            example: 'https://example.com/'
+        userIdentifier:
+          readOnly: true
+          type: string
+      required:
+        - email
+        - firstName
+        - lastName
+    User.jsonld:
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+            email:
+              format: email
+              externalDocs:
+                url: 'https://schema.org/email'
+              type: string
+            roles:
+              type: array
+              items:
+                type:
+                  - string
+                  - 'null'
+            password:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            phone:
+              type:
+                - string
+                - 'null'
+            weatherPreferences:
+              default:
+                rainAlertThreshold: 50
+                geographicZone: Île-de-France
+              type: array
+              items:
+                type:
+                  - string
+                  - 'null'
+            notificationPreferences:
+              default:
+                weatherAlerts: true
+                interventionReminders: true
+                emailNotifications: true
+              type: array
+              items:
+                type:
+                  - string
+                  - 'null'
+            notifications:
+              readOnly: true
+              type: array
+              items:
+                type: string
+                format: iri-reference
+                example: 'https://example.com/'
+            userIdentifier:
+              readOnly: true
+              type: string
+          required:
+            - email
+            - firstName
+            - lastName
+  responses: {  }
+  parameters: {  }
+  examples: {  }
+  requestBodies: {  }
+  headers: {  }
+  securitySchemes: {  }
+security: []
+tags:
+  -
+    name: Client
+    description: "Resource 'Client' operations."
+  -
+    name: Dashboard
+    description: "Dashboard statistics operations."
+  -
+    name: Intervention
+    description: "Resource 'Intervention' operations."
+  -
+    name: Notification
+    description: "Resource 'Notification' operations."
+  -
+    name: Technician
+    description: "Resource 'Technician' operations."
+  -
+    name: User
+    description: "Resource 'User' operations."
+  -
+    name: Weather
+    description: "Weather forecast and alerts operations."
+webhooks: {  }

@@ -1,8 +1,8 @@
 # [Feature Name]
 
 **Status:** Draft | In Progress | Implemented | Deprecated
-**Created:** YYYY-MM-DD
-**Last Updated:** YYYY-MM-DD
+**Created:** YYYY-MM-DD HH:MM
+**Last Updated:** YYYY-MM-DD HH:MM
 **Author:** Pierre
 
 ## Context
@@ -22,9 +22,22 @@ Décisions techniques, alternatives considérées
 Comment valider que c'est terminé ?
 
 ## Changes Log
-- YYYY-MM-DD: Création initiale
-- YYYY-MM-DD: [Description du changement]
-```
+- YYYY-MM-DD HH:MM: Création initiale
+- YYYY-MM-DD HH:MM: [Description du changement]
+
+---
+
+## Naming Convention
+
+**Filename format:** `YYYYMMDD-HHMM-feature-name.md`
+
+Examples:
+- `20251229-0900-api-requirements-analysis.md`
+- `20251229-1430-user-authentication.md`
+
+This ensures files are naturally sorted chronologically in directory listings.
+
+---
 
 ## Étape 3 : Prompt pour Claude Code
 
@@ -32,9 +45,9 @@ Voici le prompt à utiliser dans Claude Code :
 ```
 Je veux implémenter une nouvelle feature en suivant OpenSpec.
 
-1. Lis le template dans docs/specs/TEMPLATE.md
+1. Lis le template dans docs/specs/template.md
 2. Crée une spec pour ma feature : [décris ta feature]
-3. Sauvegarde la spec dans docs/specs/features/[nom-feature].md
+3. Sauvegarde la spec dans docs/specs/features/YYYYMMDD-HHMM-[nom-feature].md
 4. Une fois la spec validée par moi, implémente le code
 5. Mets à jour la spec avec les décisions d'implémentation
 6. Ajoute une entrée dans le Changes Log de la spec
@@ -46,13 +59,13 @@ Je veux implémenter une nouvelle feature en suivant OpenSpec.
 
 Pour les modifications futures :
 ```
-Consulte docs/specs/features/[nom-feature].md
+Consulte docs/specs/features/YYYYMMDD-HHMM-[nom-feature].md
 Je veux modifier : [ta demande]
 
 1. Propose un diff de la spec en markdown
 2. Attends ma validation
 3. Applique les changements code + spec
-4. Update le Changes Log avec la date et description
+4. Update le Changes Log avec la date/heure et description
 ```
 
 ## Bonus : Traçabilité Git
@@ -60,3 +73,4 @@ Je veux modifier : [ta demande]
 Ajoute un `.gitattributes` pour mieux tracker les specs :
 ```
 docs/specs/**/*.md diff=markdown
+```

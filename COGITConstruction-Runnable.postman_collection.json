@@ -1,0 +1,1033 @@
+{
+	"info": {
+		"_postman_id": "cogit-construction-runnable",
+		"name": "COGIT Construction - Runnable Tests",
+		"description": "Collection de tests fonctionnels pour l'API COGIT Construction. Les requetes sont ordonnees pour creer les ressources avant de les utiliser.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Clients",
+			"item": [
+				{
+					"name": "1.1 Create Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response has id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"    pm.environment.set('clientId', jsonData.id);",
+									"    console.log('Client ID saved:', jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Syndic Belleville\",\n  \"type\": \"Syndic\",\n  \"phone\": \"01 45 67 89 00\",\n  \"email\": \"contact@syndic-belleville.fr\",\n  \"address\": \"15 rue de Belleville, 75020 Paris\",\n  \"status\": \"Actif\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clients",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients"]
+						}
+					}
+				},
+				{
+					"name": "1.2 Get All Clients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response is a collection', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData['member'] || jsonData['hydra:member']).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clients",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients"]
+						}
+					}
+				},
+				{
+					"name": "1.3 Get Client by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has correct id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get('clientId')));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clients/{{clientId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients", "{{clientId}}"]
+						}
+					}
+				},
+				{
+					"name": "1.4 Update Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Name was updated', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql('Syndic Belleville - Updated');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Syndic Belleville - Updated\",\n  \"type\": \"Syndic\",\n  \"phone\": \"01 45 67 89 00\",\n  \"email\": \"contact@syndic-belleville.fr\",\n  \"address\": \"15 rue de Belleville, 75020 Paris\",\n  \"status\": \"Actif\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clients/{{clientId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients", "{{clientId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Technicians",
+			"item": [
+				{
+					"name": "2.1 Create Technician",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response has id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"    pm.environment.set('technicianId', jsonData.id);",
+									"    console.log('Technician ID saved:', jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jean Dupont\",\n  \"role\": \"Chef d'equipe\",\n  \"phone\": \"06 12 34 56 78\",\n  \"email\": \"jean.dupont@cogit.fr\",\n  \"location\": \"Paris 20e\",\n  \"status\": \"Actif\",\n  \"specialties\": [\"Toiture\", \"Etancheite\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/technicians",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "technicians"]
+						}
+					}
+				},
+				{
+					"name": "2.2 Get All Technicians",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/technicians",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "technicians"]
+						}
+					}
+				},
+				{
+					"name": "2.3 Get Technician by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has correct id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get('technicianId')));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/technicians/{{technicianId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "technicians", "{{technicianId}}"]
+						}
+					}
+				},
+				{
+					"name": "2.4 Update Technician",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jean Dupont\",\n  \"role\": \"Chef d'equipe Senior\",\n  \"phone\": \"06 12 34 56 78\",\n  \"email\": \"jean.dupont@cogit.fr\",\n  \"location\": \"Paris 20e\",\n  \"status\": \"Actif\",\n  \"specialties\": [\"Toiture\", \"Etancheite\", \"Facade\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/technicians/{{technicianId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "technicians", "{{technicianId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Users",
+			"item": [
+				{
+					"name": "3.1 Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response has id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"    pm.environment.set('userId', jsonData.id);",
+									"    console.log('User ID saved:', jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"pierre@cogit.fr\",\n  \"password\": \"TestPassword123!\",\n  \"firstName\": \"Pierre\",\n  \"lastName\": \"Martin\",\n  \"phone\": \"06 98 76 54 32\",\n  \"roles\": [\"ROLE_ADMIN\"],\n  \"weatherPreferences\": {\n    \"rainAlertThreshold\": 50,\n    \"geographicZone\": \"Ile-de-France\"\n  },\n  \"notificationPreferences\": {\n    \"weatherAlerts\": true,\n    \"interventionReminders\": true,\n    \"emailNotifications\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users"]
+						}
+					}
+				},
+				{
+					"name": "3.2 Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users"]
+						}
+					}
+				},
+				{
+					"name": "3.3 Get User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "user", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Interventions",
+			"item": [
+				{
+					"name": "4.1 Create Intervention",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response has id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"    pm.environment.set('interventionId', jsonData.id);",
+									"    console.log('Intervention ID saved:', jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Reparation toiture immeuble Belleville\",\n  \"client\": \"/api/clients/{{clientId}}\",\n  \"technician\": \"/api/technicians/{{technicianId}}\",\n  \"date\": \"2025-01-15\",\n  \"time\": \"09:00:00\",\n  \"duration\": 4,\n  \"location\": \"15 rue de Belleville, 75020 Paris\",\n  \"type\": \"Toiture\",\n  \"description\": \"Reparation fuite toiture terrasse batiment B\",\n  \"status\": \"Planifiée\",\n  \"rainProbability\": 20\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions"]
+						}
+					}
+				},
+				{
+					"name": "4.2 Get All Interventions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions"]
+						}
+					}
+				},
+				{
+					"name": "4.3 Get Intervention by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions/{{interventionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions", "{{interventionId}}"]
+						}
+					}
+				},
+				{
+					"name": "4.4 Update Intervention",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Reparation toiture immeuble Belleville\",\n  \"client\": \"/api/clients/{{clientId}}\",\n  \"technician\": \"/api/technicians/{{technicianId}}\",\n  \"date\": \"2025-01-15\",\n  \"time\": \"09:00:00\",\n  \"duration\": 4,\n  \"location\": \"15 rue de Belleville, 75020 Paris\",\n  \"type\": \"Toiture\",\n  \"description\": \"Reparation fuite toiture terrasse batiment B\",\n  \"status\": \"Confirmée\",\n  \"rainProbability\": 20\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions/{{interventionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions", "{{interventionId}}"]
+						}
+					}
+				},
+				{
+					"name": "4.5 Reschedule Intervention",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"date\": \"2025-01-20\",\n  \"time\": \"14:00:00\",\n  \"reason\": \"Report pour cause de pluie\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions/{{interventionId}}/reschedule",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions", "{{interventionId}}", "reschedule"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Notifications",
+			"item": [
+				{
+					"name": "5.1 Create Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response has id', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"    pm.environment.set('notificationId', jsonData.id);",
+									"    console.log('Notification ID saved:', jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"alert\",\n  \"title\": \"Alerte meteo\",\n  \"message\": \"Risque de pluie eleve pour l'intervention du 15 janvier\",\n  \"read\": false,\n  \"user\": \"/api/users/{{userId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "notifications"]
+						}
+					}
+				},
+				{
+					"name": "5.2 Get All Notifications",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "notifications"]
+						}
+					}
+				},
+				{
+					"name": "5.3 Mark Notification as Read",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"read\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "notifications", "{{notificationId}}", "read"]
+						}
+					}
+				},
+				{
+					"name": "5.4 Mark All Notifications as Read",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications/read-all",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "notifications", "read-all"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Dashboard & Weather",
+			"item": [
+				{
+					"name": "6.1 Get Dashboard Stats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/dashboard/stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "dashboard", "stats"]
+						}
+					}
+				},
+				{
+					"name": "6.2 Get Weather Forecast for Intervention",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/weather/forecast/{{interventionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "weather", "forecast", "{{interventionId}}"]
+						}
+					}
+				},
+				{
+					"name": "6.3 Get Weather Alerts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/weather/alerts",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "weather", "alerts"]
+						}
+					}
+				},
+				{
+					"name": "6.4 Get Weather by Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/weather/location/48.8566,2.3522",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "weather", "location", "48.8566,2.3522"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "7. Cleanup (Delete)",
+			"item": [
+				{
+					"name": "7.1 Delete Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 204', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications/{{notificationId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "notifications", "{{notificationId}}"]
+						}
+					}
+				},
+				{
+					"name": "7.2 Delete Intervention",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 204', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/interventions/{{interventionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "interventions", "{{interventionId}}"]
+						}
+					}
+				},
+				{
+					"name": "7.3 Delete Technician",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 204', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/technicians/{{technicianId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "technicians", "{{technicianId}}"]
+						}
+					}
+				},
+				{
+					"name": "7.4 Delete Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 204', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clients/{{clientId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients", "{{clientId}}"]
+						}
+					}
+				},
+				{
+					"name": "7.5 Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 204', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "{{userId}}"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
