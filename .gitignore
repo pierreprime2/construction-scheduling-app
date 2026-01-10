@@ -37,3 +37,4 @@ api/phpunit.xml
 
 # Postman
 *.postman_environment.json
+*.postman_test_run.json

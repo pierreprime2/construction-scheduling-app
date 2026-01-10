@@ -3,9 +3,10 @@
 import type React from "react"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import Image from "next/image"
+import { useAuth } from "@/contexts/auth-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -25,8 +26,40 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, onCreateIntervention, onCreateTechnician }: AppLayoutProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, isLoading, logout } = useAuth()
   const [isInterventionsExpanded, setIsInterventionsExpanded] = useState(true)
   const [isTechniciansExpanded, setIsTechniciansExpanded] = useState(true)
+
+  const handleLogout = async () => {
+    await logout()
+    router.push('/login')
+  }
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (!user) return '??'
+    const first = user.firstName?.charAt(0) || ''
+    const last = user.lastName?.charAt(0) || ''
+    return (first + last).toUpperCase() || user.email.charAt(0).toUpperCase()
+  }
+
+  // Get display name
+  const getDisplayName = () => {
+    if (!user) return 'Utilisateur'
+    if (user.firstName && user.lastName) {
+      return `${user.firstName} ${user.lastName}`
+    }
+    return user.email
+  }
+
+  // Get role display
+  const getRoleDisplay = () => {
+    if (!user?.roles) return ''
+    if (user.roles.includes('ROLE_ADMIN')) return 'Admin'
+    if (user.roles.includes('ROLE_TECHNICIAN')) return 'Technicien'
+    return 'Utilisateur'
+  }
 
   return (
     <div className="flex h-screen">
@@ -162,36 +195,50 @@ export function AppLayout({ children, onCreateIntervention, onCreateTechnician }
 
         {/* User Menu at Bottom */}
         <div className="border-t p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring">
-                <Avatar className="h-9 w-9">
-                  <AvatarFallback className="bg-primary text-primary-foreground font-medium">JD</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col items-start text-left">
-                  <span className="font-medium text-foreground">Jean Dupont</span>
-                  <span className="text-xs text-muted-foreground">Admin</span>
-                </div>
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="right" className="w-56">
-              <DropdownMenuLabel>
-                <div className="flex flex-col gap-1">
-                  <span className="font-medium">Jean Dupont</span>
-                  <span className="text-xs text-muted-foreground">jean.dupont@idf-construction.fr</span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
-                  <Settings className="h-4 w-4" />
-                  Paramètres
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive cursor-pointer">Déconnexion</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {isLoading ? (
+            <div className="flex items-center gap-3 rounded-lg px-3 py-2.5">
+              <div className="h-9 w-9 rounded-full bg-muted animate-pulse" />
+              <div className="flex flex-col gap-1">
+                <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+                <div className="h-3 w-16 bg-muted rounded animate-pulse" />
+              </div>
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button type="button" className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring">
+                  <Avatar className="h-9 w-9">
+                    <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+                      {getUserInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="font-medium text-foreground">{getDisplayName()}</span>
+                    <span className="text-xs text-muted-foreground">{getRoleDisplay()}</span>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" side="right" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium">{getDisplayName()}</span>
+                    <span className="text-xs text-muted-foreground">{user?.email}</span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                    <Settings className="h-4 w-4" />
+                    Paramètres
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-destructive cursor-pointer" onClick={handleLogout}>
+                  Déconnexion
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </aside>
 

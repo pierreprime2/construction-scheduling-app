@@ -5,7 +5,195 @@
 		"description": "Collection de tests fonctionnels pour l'API COGIT Construction. Les requetes sont ordonnees pour creer les ressources avant de les utiliser.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"exec": [
+					"// Add Authorization header if token exists",
+					"const token = pm.environment.get('authToken');",
+					"if (token && !pm.request.url.toString().includes('/api/login') && !pm.request.url.toString().includes('/api/register')) {",
+					"    pm.request.headers.add({",
+					"        key: 'Authorization',",
+					"        value: 'Bearer ' + token",
+					"    });",
+					"}"
+				],
+				"type": "text/javascript"
+			}
+		}
+	],
 	"item": [
+		{
+			"name": "0. Authentication",
+			"item": [
+				{
+					"name": "0.1 Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201 or 409 (user may already exist)', function() {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 409]);",
+									"});",
+									"",
+									"pm.test('Response is valid (new user or conflict)', function() {",
+									"    var jsonData = pm.response.json();",
+									"    if (pm.response.code === 201) {",
+									"        pm.expect(jsonData.user.email).to.eql('postman-test@cogit.fr');",
+									"    } else {",
+									"        // 409 Conflict - user already exists, expected on re-runs",
+									"        pm.expect(jsonData.error || jsonData.detail).to.exist;",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"postman-test@cogit.fr\",\n  \"password\": \"TestPassword123!\",\n  \"firstName\": \"Postman\",\n  \"lastName\": \"Test\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "register"]
+						}
+					}
+				},
+				{
+					"name": "0.2 Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has token', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.token).to.be.a('string');",
+									"    pm.environment.set('authToken', jsonData.token);",
+									"    console.log('Auth token saved');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"postman-test@cogit.fr\",\n  \"password\": \"TestPassword123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "login"]
+						}
+					}
+				},
+				{
+					"name": "0.3 Get Current User (/api/me)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has user email', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email).to.eql('postman-test@cogit.fr');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "me"]
+						}
+					}
+				},
+				{
+					"name": "0.4 Access without token (should fail)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 401', function() {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test('Error message mentions JWT', function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('JWT');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Temporarily remove token for this request",
+									"pm.request.headers.remove('Authorization');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clients",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clients"]
+						}
+					}
+				}
+			]
+		},
 		{
 			"name": "1. Clients",
 			"item": [
