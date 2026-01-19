@@ -77,6 +77,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Use CI nginx config (HTTP only)
+        run: cp nginx.ci.conf nginx.conf
+
       - name: Build Docker images
         run: docker compose build
 
