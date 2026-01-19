@@ -11,9 +11,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/pierreprime2/construction-scheduling-app/frontend:latest
     environment:
       - NODE_ENV=production
     expose:
@@ -21,9 +19,7 @@ services:
     restart: unless-stopped
 
   api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
+    image: ghcr.io/pierreprime2/construction-scheduling-app/api:latest
     environment:
       - APP_ENV=${APP_ENV:-prod}
       - APP_SECRET=${APP_SECRET:-changeThisSecret}

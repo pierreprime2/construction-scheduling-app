@@ -9,6 +9,7 @@ RUN apk add --no-cache \
     libzip-dev \
     icu-dev \
     sqlite-dev \
+    openssl \
     && docker-php-ext-install \
     pdo_sqlite \
     zip \
@@ -23,8 +24,8 @@ WORKDIR /var/www/html
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Install dependencies (include dev for fixtures in CI)
+RUN composer install --optimize-autoloader --no-scripts
 
 # Copy application code
 COPY . .
@@ -32,17 +33,20 @@ COPY . .
 # Run post-install scripts
 RUN composer run-script post-install-cmd --no-interaction || true
 
-# Create var directory and set permissions
-RUN mkdir -p var/cache var/log \
-    && chown -R www-data:www-data var
+# Create directories and set permissions
+RUN mkdir -p var/cache var/log var/data config/jwt \
+    && chown -R www-data:www-data var config/jwt
 
-# Create non-root user
-RUN addgroup -g 1001 symfony \
-    && adduser -u 1001 -G symfony -s /bin/sh -D symfony \
-    && chown -R symfony:symfony /var/www/html
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-USER symfony
+# Set permissions for www-data to run the app
+RUN chown -R www-data:www-data /var/www/html
+
+USER www-data
 
 EXPOSE 9000
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
