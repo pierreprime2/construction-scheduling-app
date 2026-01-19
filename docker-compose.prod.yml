@@ -16,6 +16,7 @@ services:
     image: ghcr.io/pierreprime2/construction-scheduling-app/frontend:latest
     environment:
       - NODE_ENV=production
+      - API_URL=http://nginx:80
     expose:
       - "3000"
     restart: unless-stopped
