@@ -2,7 +2,7 @@
 
 **Status:** Implemented
 **Created:** 2026-01-17 15:00
-**Last Updated:** 2026-01-17 15:00
+**Last Updated:** 2026-01-20 16:45
 **Author:** Pierre
 
 ## Context
@@ -43,8 +43,12 @@ L'application COGIT Construction nécessite une infrastructure de déploiement p
 
 ### Routage Nginx
 
-- `/*` → Frontend Next.js (port 3000)
+- `/api/auth/*` → Frontend Next.js (route handlers auth)
+- `/api/backend/*` → Frontend Next.js (proxy vers Symfony)
 - `/api/*` → Backend Symfony PHP-FPM (port 9000)
+- `/*` → Frontend Next.js (port 3000)
+
+Note: L'ordre est important - nginx utilise la correspondance la plus spécifique.
 
 ### Pipeline CI/CD
 
@@ -64,11 +68,14 @@ L'application COGIT Construction nécessite une infrastructure de déploiement p
 
 | Fichier | Description |
 |---------|-------------|
-| `docker-compose.yml` | Orchestration des 3 services (nginx, frontend, api) |
-| `nginx.conf` | Configuration reverse proxy |
+| `docker-compose.yml` | Orchestration des 3 services avec build local |
+| `docker-compose.prod.yml` | Orchestration avec images GHCR pré-construites |
+| `nginx.conf` | Configuration reverse proxy HTTPS (prod) |
+| `nginx.ci.conf` | Configuration reverse proxy HTTP (CI/local) |
 | `Dockerfile` | Image frontend Next.js (multi-stage, standalone) |
 | `api/Dockerfile` | Image backend PHP-FPM 8.2 |
-| `.github/workflows/deploy.yml` | Pipeline CI/CD |
+| `api/docker-entrypoint.sh` | Script init: JWT keys, migrations, fixtures |
+| `.github/workflows/deploy.yml` | Pipeline CI/CD 3 stages |
 | `.env.example` | Template des variables d'environnement |
 
 ### Configuration Next.js
@@ -90,17 +97,29 @@ Ajout de `output: 'standalone'` dans `next.config.mjs` pour générer un bundle 
 
 ## Validation Criteria
 
-- [ ] `docker compose build` réussit localement
-- [ ] `docker compose up` lance les 3 services
-- [ ] Frontend accessible sur http://localhost
-- [ ] API accessible sur http://localhost/api
-- [ ] Pipeline GitHub Actions passe (test → build → deploy)
-- [ ] Application accessible sur le VPS après deploy
+- [x] `docker compose build` réussit localement
+- [x] `docker compose up` lance les 3 services
+- [x] Frontend accessible sur http://localhost
+- [x] API accessible sur http://localhost/api
+- [x] Pipeline GitHub Actions passe (test → build → deploy)
+- [x] Application accessible sur le VPS après deploy (testé avant suspension OVH)
+- [x] Authentification fonctionne (login/register)
+- [x] Dashboard charge les données via /api/backend/*
 
 ## Changes Log
 
 - 2026-01-17 15:00: Création initiale - Configuration Docker et CI/CD
+- 2026-01-19: Ajout HTTPS avec certificat auto-signé
+- 2026-01-19: Séparation nginx.conf (prod HTTPS) et nginx.ci.conf (CI HTTP)
+- 2026-01-19: Fix routage /api/auth/* et /api/backend/* vers Next.js
+- 2026-01-20: Fix variable API_URL dans backend proxy route handler
+- 2026-01-20: Note: VPS OVH suspendu suite à compromission (attaque UDP sortante)
 
 ## Git History
 
-_Section à compléter après commit avec l'ID de ticket COG-001_
+Commits liés à COG-001:
+- `1c952b6` feat(COG-001): add Docker and CI/CD configuration
+- `394aaa1` fix(nginx): allow internal HTTP API calls from frontend container
+- `8888cfa` fix(nginx): route /api/auth/* to Next.js, not Symfony
+- `9712f9f` fix(nginx): route /api/backend/* to Next.js
+- `a863e6a` fix(nginx): add /api/auth and /api/backend routes to CI config
