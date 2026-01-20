@@ -130,7 +130,7 @@ systemctl restart fail2ban
 fail2ban-client status
 
 echo -e "${GREEN}[6/6] Installation de Docker...${NC}"
-apt install -y ca-certificates curl gnupg
+apt install -y ca-certificates curl gnupg apache2-utils
 install -m 0755 -d /etc/apt/keyrings
 
 if [[ "$OS" == "debian" ]]; then
@@ -169,7 +169,11 @@ echo "   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \\"
 echo "     -keyout ~/cogit/ssl/nginx.key -out ~/cogit/ssl/nginx.crt \\"
 echo "     -subj '/CN=localhost'"
 echo ""
-echo "4. Configurez GitHub Secrets:"
+echo "4. Créez le fichier htpasswd pour l'accès DB admin:"
+echo "   htpasswd -c ~/cogit/htpasswd admin"
+echo "   (choisissez un mot de passe fort)"
+echo ""
+echo "5. Configurez GitHub Secrets:"
 echo "   VPS_HOST: $(hostname -I | awk '{print $1}')"
 echo "   VPS_USER: deploy"
 echo "   VPS_SSH_KEY: <votre clé privée>"

@@ -38,3 +38,6 @@ api/phpunit.xml
 # Postman
 *.postman_environment.json
 *.postman_test_run.json
+
+# Credentials (htpasswd for nginx basic auth)
+htpasswd

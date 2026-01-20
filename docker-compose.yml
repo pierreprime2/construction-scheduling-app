@@ -4,7 +4,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.ci.conf:/etc/nginx/nginx.conf:ro
+      - ./htpasswd:/etc/nginx/.htpasswd:ro
     depends_on:
       - frontend
       - api
@@ -40,6 +41,19 @@ services:
     expose:
       - "9000"
     restart: unless-stopped
+
+  sqliteweb:
+    image: coleifer/sqlite-web
+    expose:
+      - "8080"
+    volumes:
+      - api_data:/data:ro
+    command: sqlite_web -H 0.0.0.0 -p 8080 -u /db /data/data.db
+    depends_on:
+      - api
+    restart: unless-stopped
+    profiles:
+      - dev
 
 volumes:
   api_data:
