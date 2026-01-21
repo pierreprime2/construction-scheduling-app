@@ -55,6 +55,50 @@ services:
     profiles:
       - dev
 
+  loki:
+    image: grafana/loki:3.0.0
+    command: -config.file=/etc/loki/local-config.yaml
+    expose:
+      - "3100"
+    volumes:
+      - loki_data:/loki
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    command: -config.file=/etc/promtail/config.yaml
+    volumes:
+      - ./promtail/config.yaml:/etc/promtail/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - loki
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    environment:
+      - GF_SERVER_ROOT_URL=/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    expose:
+      - "3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - loki
+    restart: unless-stopped
+    profiles:
+      - dev
+
 volumes:
   api_data:
   api_jwt:
+  loki_data:
+  grafana_data:

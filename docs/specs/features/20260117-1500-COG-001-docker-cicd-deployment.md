@@ -2,7 +2,7 @@
 
 **Status:** Implemented
 **Created:** 2026-01-17 15:00
-**Last Updated:** 2026-01-20 17:00
+**Last Updated:** 2026-01-21
 **Author:** Pierre
 
 ## Context
@@ -47,6 +47,7 @@ L'application COGIT Construction nécessite une infrastructure de déploiement p
 - `/api/backend/*` → Frontend Next.js (proxy vers Symfony)
 - `/api/*` → Backend Symfony PHP-FPM (port 9000)
 - `/db/*` → sqlite-web (basic auth) - voir COG-002
+- `/grafana/*` → Grafana (basic auth) - voir COG-003
 - `/*` → Frontend Next.js (port 3000)
 
 Note: L'ordre est important - nginx utilise la correspondance la plus spécifique.
@@ -114,8 +115,10 @@ Ajout de `output: 'standalone'` dans `next.config.mjs` pour générer un bundle 
 - 2026-01-19: Séparation nginx.conf (prod HTTPS) et nginx.ci.conf (CI HTTP)
 - 2026-01-19: Fix routage /api/auth/* et /api/backend/* vers Next.js
 - 2026-01-20: Fix variable API_URL dans backend proxy route handler
-- 2026-01-20: Note: VPS OVH suspendu suite à compromission (attaque UDP sortante)
+- 2026-01-20: Note: VPS OVH suspendu suite à compromission (attaque UDP sortante via CVE-2025-55182)
 - 2026-01-20: Ajout route /db/* pour sqlite-web (COG-002)
+- 2026-01-20: Ajout route /grafana/* pour Grafana (COG-003)
+- 2026-01-21: **SECURITY** Upgrade Next.js 16.0.3 → 16.1.4 (fix CVE-2025-55182 "React2Shell" RCE)
 
 ## Git History
 
