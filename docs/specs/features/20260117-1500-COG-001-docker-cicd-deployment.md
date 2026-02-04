@@ -119,6 +119,7 @@ Ajout de `output: 'standalone'` dans `next.config.mjs` pour générer un bundle 
 - 2026-01-20: Ajout route /db/* pour sqlite-web (COG-002)
 - 2026-01-20: Ajout route /grafana/* pour Grafana (COG-003)
 - 2026-01-21: **SECURITY** Upgrade Next.js 16.0.3 → 16.1.4 (fix CVE-2025-55182 "React2Shell" RCE)
+- 2026-02-04: New VPS deployment validated
 
 ## Git History
 
